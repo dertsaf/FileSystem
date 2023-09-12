@@ -8,6 +8,10 @@ public class FileSystemUtil {
 
     public static Path extractDirectory(String filePath) {
         Path path = Paths.get(filePath);
+        return extractDirectory(path);
+    }
+
+    public static Path extractDirectory(Path path) {
         return path.getParent();
     }
 }

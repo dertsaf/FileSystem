@@ -1,7 +1,7 @@
-package main.filesystem.cmd;
+package filesystem.cmd;
 
-import main.filesystem.FileSystemService;
-import main.filesystem.ServiceProvider;
+import filesystem.FileSystemService;
+import filesystem.ServiceProvider;
 
 import java.io.IOException;
 

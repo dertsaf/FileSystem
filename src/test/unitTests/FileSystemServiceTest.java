@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,16 +52,19 @@ public class FileSystemServiceTest {
     }
 
     @Test
-    public void addFile_CreatesNotExistingDirectory() {
+    public void addFile_CreatesNotExistingDirectory() throws URISyntaxException {
         //find the TestFile.txt
         var classLoader = FileSystemServiceTest.class.getClassLoader();
 
-        var resourceTestFile = classLoader.getResource(TEST_FILE);
+        URL resourceTestFile = classLoader.getResource(TEST_FILE);
         assertNotNull(resourceTestFile);
 
-        var fileToAddPath = resourceTestFile.getPath();
-        var directory = FileSystemUtil.extractDirectory(fileToAddPath) + "/random/";
-        var destinationFilePath = directory + "/" + ADDED_TEST_FILE;
+        //URISyntaxException shouldn't be thrown:
+        assertDoesNotThrow(resourceTestFile::toURI);
+
+        Path fileToAddPath = Paths.get(resourceTestFile.toURI());
+        String directory = FileSystemUtil.extractDirectory(fileToAddPath) +  "/random/";
+        String destinationFilePath = directory + "/" + ADDED_TEST_FILE;
 
         //register the path to be deleted after the test
         pathsToRemove.add(directory);
@@ -70,7 +75,7 @@ public class FileSystemServiceTest {
 
         //creates not existing directory '..../random/'
         assertDoesNotThrow(
-                () -> fileSystem.addFile(destinationFilePath, fileToAddPath));
+                () -> fileSystem.addFile(destinationFilePath, fileToAddPath.toString()));
 
         assertDoesNotThrow(() ->
                 assertTrue(Files.exists(Paths.get(directory)))
@@ -78,32 +83,39 @@ public class FileSystemServiceTest {
     }
 
     @Test
-    public void addFile_NoSuchFile_ThrowsException() {
+    public void addFile_NoSuchFile_ThrowsException() throws URISyntaxException {
         //find the TestFile.txt
         var classLoader = FileSystemServiceTest.class.getClassLoader();
 
-        var resource = classLoader.getResource(TEST_FILE);
+        URL resource = classLoader.getResource(TEST_FILE);
         assertNotNull(resource);
+        //URISyntaxException shouldn't be thrown:
+        assertDoesNotThrow(resource::toURI);
 
-        var fileToAdd = resource.getPath();
-        var destinationFilePath = FileSystemUtil.extractDirectory(fileToAdd) + "/" + ADDED_TEST_FILE;
+        Path fileToAddPath = Paths.get(resource.toURI());
+
+        var destinationFilePath = FileSystemUtil.extractDirectory(fileToAddPath) + "/" + ADDED_TEST_FILE;
 
         //add file that doesn't exist
         assertThrows(
                 NoSuchFileException.class,
-                () -> fileSystem.addFile(destinationFilePath, fileToAdd + "blabla")
+                () -> fileSystem.addFile(destinationFilePath, fileToAddPath.toString() + "blabla")
         );
     }
 
     @Test
-    public void addFile_FileAlreadyExists_ThrowsException() {
+    public void addFile_FileAlreadyExists_ThrowsException() throws URISyntaxException {
         //find the TestFile.txt
         var classLoader = FileSystemServiceTest.class.getClassLoader();
 
         var resource = classLoader.getResource(TEST_FILE);
         assertNotNull(resource);
+        //URISyntaxException shouldn't be thrown:
+        assertDoesNotThrow(resource::toURI);
 
-        var fileToAdd = resource.getPath();
+        Path fileToAddPath = Paths.get(resource.toURI());
+
+        var fileToAdd = fileToAddPath.toString();
 
         //Try to add file that exists
         assertThrows(
@@ -113,14 +125,17 @@ public class FileSystemServiceTest {
     }
 
     @Test
-    public void updateFile_FileAlreadyExists_ThrowsException() {
+    public void updateFile_FileAlreadyExists_ThrowsException() throws URISyntaxException {
         //find the TestFile.txt
         var classLoader = FileSystemServiceTest.class.getClassLoader();
 
-        var resource = classLoader.getResource(TEST_FILE);
+        URL resource = classLoader.getResource(TEST_FILE);
         assertNotNull(resource);
 
-        var fileToAdd = resource.getPath();
+        //URISyntaxException shouldn't be thrown:
+        assertDoesNotThrow(resource::toURI);
+        Path fileToAddPath = Paths.get(resource.toURI());
+        String fileToAdd = fileToAddPath.toString();
 
         //update file that doesn't exist
         assertThrows(

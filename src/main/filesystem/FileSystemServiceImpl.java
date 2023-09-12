@@ -1,7 +1,7 @@
 package filesystem;
 
-import main.filesystem.constants.Constants;
-import main.filesystem.utils.FileSystemUtil;
+import filesystem.constants.Constants;
+import filesystem.utils.FileSystemUtil;
 
 import java.io.IOException;
 import java.nio.file.*;

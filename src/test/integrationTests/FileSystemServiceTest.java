@@ -1,6 +1,5 @@
 package integrationTests;
 
-
 import filesystem.ContentFileService;
 import filesystem.FileSystemService;
 import filesystem.ServiceProvider;
@@ -11,7 +10,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,17 +46,22 @@ public class FileSystemServiceTest {
     }
 
     @Test
-    public void addFile_ReadIt_Update_Then_Delete_Success() {
+    public void addFile_ReadIt_Update_Then_Delete_Success() throws URISyntaxException {
         //find the TestFile.txt
         var classLoader = FileSystemServiceTest.class.getClassLoader();
 
         var resourceTestFile = classLoader.getResource(TEST_FILE);
         assertNotNull(resourceTestFile);
+        //URISyntaxException shouldn't be thrown:
+        assertDoesNotThrow(resourceTestFile::toURI);
+
+        String fileToAddPath = Paths.get(resourceTestFile.toURI()).toString();
 
         var resourceTestFile2 = classLoader.getResource(TEST_FILE2);
         assertNotNull(resourceTestFile2);
+        //URISyntaxException shouldn't be thrown:
+        assertDoesNotThrow(resourceTestFile2::toURI);
 
-        var fileToAddPath = resourceTestFile.getPath();
         var destinationFilePath = FileSystemUtil.extractDirectory(fileToAddPath) + "/"+ ADDED_TEST_FILE;
 
         //register file for the cleanup:
@@ -69,13 +75,16 @@ public class FileSystemServiceTest {
 
         //read the added file into TestFile.txt_v2  file:
         var newDestinationFile = destinationFilePath + "_v2";
+        //fallback: register file for the cleanup in case it's not properly deleted in the end of the method
+        filesToRemove.add(newDestinationFile);
+
         assertDoesNotThrow(() -> fileSystem.readFile(destinationFilePath, newDestinationFile));
 
         //Verify that both files have the same content:
         compareContentOfTwoFiles(destinationFilePath, newDestinationFile, true);
 
         //update new newDestinationFile with content of TestFile2.txt  and verify that content is different
-        var testFile2Path = resourceTestFile2.getPath();
+        String testFile2Path = Paths.get(resourceTestFile2.toURI()).toString();
         assertDoesNotThrow(() -> fileSystem.updateFile(newDestinationFile, testFile2Path));
         compareContentOfTwoFiles(destinationFilePath, newDestinationFile, false);
 
