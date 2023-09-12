@@ -5,13 +5,14 @@ import filesystem.ServiceProvider;
 
 import java.io.IOException;
 
+import static filesystem.constants.Constants.*;
 
 public class ReadFileCmd {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         if (args.length != 2) {
-            System.err.println("Please provide both paths to the files");
+            System.err.println(PROVIDE_BOTH_FILES_MESSAGE);
             return;
         }
 
@@ -21,10 +22,10 @@ public class ReadFileCmd {
             var fileSystem =  ServiceProvider.getInstance(FileSystemService.class);
 
             fileSystem.readFile(destinationFile, fileToAdd);
-            //todo
-            System.out.println("The file '" + destinationFile + "' was successfully updated.");
+
+            System.out.println(OPERATION_FINISHED_MESSAGE);
         } catch (IOException e) {
-            System.err.println("Operation failed.");
+            System.err.println(OPERATION_FAILED_MESSAGE);
             e.printStackTrace();
         }
     }

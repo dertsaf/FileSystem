@@ -10,8 +10,15 @@ public class Constants {
             "Please verify that you've provided correct path to the destination file." +
             "The file you have provided does not exist.";
 
-    public static final String FILE_NOT_FOUND_MESSAGE = "An error occurred while copying the file's content. " +
-            "Please verify that you've provided correct path to the files.";
+    public static final String PROVIDE_BOTH_FILES_MESSAGE = "Please provide both paths to the files.";
 
-    public static final String INVALID_PATH_MESSAGE = "Please provide correct path to the file";
+    public static final String PROVIDE_FILE_PATH_MESSAGE = "Please provide the path to the file to be deleted.";
+
+    public static final String OPERATION_FAILED_MESSAGE = "Operation failed.";
+
+    public static final String OPERATION_FINISHED_MESSAGE = "The operation was successfully finished.";
+
+    public static final String SERVICE_NOT_REGISTERED_MESSAGE = "Service not registered: %s";
+    public static final String EXISTING_IMPLEMENTATION_COULD_NOT_BE_OVERRIDDEN_MESSAGE = "The service %s couldn't be overridden since it was already registered.";
+
 }

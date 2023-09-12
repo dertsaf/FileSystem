@@ -11,25 +11,22 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ServiceProviderTest {
 
     @Test
-    public void getInstance_returnsDefaultImplementation() {
+    public void getInstance_ReturnsDefaultImplementation() {
         assertNotNull(ServiceProvider.getInstance(ContentFileService.class));
         assertNotNull(ServiceProvider.getInstance(FileSystemService.class));
     }
 
     @Test
-    public void getInstance_throwsException_whenImplementationNotProvided() {
+    public void getInstance_ThrowsException_whenImplementationNotProvided() {
         assertThrows(RuntimeException.class,
                 () -> ServiceProvider.getInstance(ServiceProviderTest.class));
     }
 
     @Test
-    public void getInstance_returnsOverriddenImplementation() {
-        var fileSystemImpl = ServiceProvider.getInstance(FileSystemService.class);
+    public void getInstance_ThrowsException_WhenTriesToOverrideImplementation() {
+        ServiceProvider.getInstance(FileSystemService.class);
         var newFileSystem = new FileSystemServiceImpl();
-
-        ServiceProvider.register(FileSystemService.class, newFileSystem);
-
-        assertNotEquals(fileSystemImpl, ServiceProvider.getInstance(FileSystemService.class));
-        assertEquals(newFileSystem, ServiceProvider.getInstance(FileSystemService.class));
+        assertThrows(RuntimeException.class,
+                () -> ServiceProvider.register(FileSystemService.class, newFileSystem));
     }
 }

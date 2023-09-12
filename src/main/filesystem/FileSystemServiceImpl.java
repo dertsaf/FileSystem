@@ -13,10 +13,10 @@ public class FileSystemServiceImpl implements FileSystemService {
         Path destinationFilePath = Paths.get(destinationFile);
         Path fileToAddPath = Paths.get(fileToAdd);
 
-        Path destinationDiRectory = FileSystemUtil.extractDirectory(destinationFile);
+        Path destinationDirectory = FileSystemUtil.extractDirectory(destinationFile);
 
-        if (destinationDiRectory != null)
-            Files.createDirectories(destinationDiRectory);
+        if (destinationDirectory != null)
+            Files.createDirectories(destinationDirectory);
 
         if (Files.exists(destinationFilePath))
             throw new FileAlreadyExistsException(destinationFile, null, Constants.FILE_ALREADY_EXISTS_MESSAGE);

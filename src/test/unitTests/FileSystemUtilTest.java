@@ -15,7 +15,7 @@ public class FileSystemUtilTest {
             "/ , file1",
             "/ , "
     })
-    public void extractDirectory_AllPathsCorrect_DoesNotThrowException(String directory, String file) {
+    public void extractDirectory_DoesNotThrowException_WhenAllPathsAreCorrect(String directory, String file) {
         var actualResult = FileSystemUtil.extractDirectory(directory + file);
         assertEquals(directory, actualResult.toString());
     }

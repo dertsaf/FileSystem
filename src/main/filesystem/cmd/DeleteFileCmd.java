@@ -5,12 +5,14 @@ import filesystem.ServiceProvider;
 
 import java.io.IOException;
 
+import static filesystem.constants.Constants.*;
+
 public class DeleteFileCmd {
 
     public static void main(String[] args) {
 
         if (args.length != 1) {
-            System.err.println("Please provide the path to the file to be deleted.");
+            System.err.println(PROVIDE_FILE_PATH_MESSAGE);
             return;
         }
 
@@ -20,9 +22,9 @@ public class DeleteFileCmd {
 
             fileSystem.deleteFile(fileToDelete);
 
-            System.out.println("The file '" + fileToDelete + "' was successfully deleted.");
+            System.out.println(OPERATION_FINISHED_MESSAGE);
         } catch (IOException e) {
-            System.err.println("Operation failed.");
+            System.err.println(OPERATION_FAILED_MESSAGE);
             e.printStackTrace();
         }
     }
