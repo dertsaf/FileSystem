@@ -30,7 +30,7 @@ Updates the contents of a file in the file system with the content of another fi
 ### Example
 The following script will update the _ToBeUpdated.txt_ file with the content of  _UpdateWith.txt_
 
-`java -cp FileSystem.jar filesystem.cmd.updateFileCmd /folder1/folder2/ToBeUpdated.txt ./UpdateWith.txt`
+`java -cp FileSystem.jar filesystem.cmd.UpdateFileCmd /folder1/folder2/ToBeUpdated.txt ./UpdateWith.txt`
 
 
 ## `readFile`
@@ -40,7 +40,7 @@ Reads the contents of a file from the file system and copies it to another file.
 ### Execution
 The following script will create a file _FileToCopyTo.txt_ and copy the content of  _FileToReadFrom.txt_ to it
 
-`java -cp FileSystem.jar filesystem.cmd.readFileCmd /folder1/folder2/FileToReadFrom.txt ./FileToCopyTo.txt`
+`java -cp FileSystem.jar filesystem.cmd.ReadFileCmd /folder1/folder2/FileToReadFrom.txt ./FileToCopyTo.txt`
 
 
 ## `deleteFile`
@@ -50,4 +50,4 @@ Deletes a file from the file system.
 ### Execution
 The following script will delete _ExistingFileToDelete.txt_ file from the file system.
 
-`java -cp FileSystem.jar filesystem.cmd.deleteFileCmd ./ExistingFileToDelete.txt`
+`java -cp FileSystem.jar filesystem.cmd.DeleteFileCmd ./ExistingFileToDelete.txt`
