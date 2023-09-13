@@ -1,12 +1,7 @@
 package integrationTests;
 
-import filesystem.ContentFileService;
-import filesystem.FileSystemService;
-import filesystem.ServiceProvider;
 import filesystem.utils.FileSystemUtil;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -14,37 +9,11 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FileSystemServiceTest {
-
-    public final static String ADDED_TEST_FILE = "AddedFile.txt";
-    public final static String TEST_FILE = "TestFile.txt";
-    private final static String TEST_FILE2 = "TestFile2.txt";
-    private static FileSystemService fileSystem;
-    private static ContentFileService contentFileService;
-    private final static List<String> filesToRemove = new LinkedList<>();
-
-    @BeforeAll
-    public static void initialization() {
-        fileSystem = ServiceProvider.getInstance(FileSystemService.class);
-        contentFileService = ServiceProvider.getInstance(ContentFileService.class);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        for (var file: filesToRemove) {
-            try {
-                Files.delete(Paths.get(file));
-            } catch (IOException e) {
-                //do nothing
-            }
-        }
-    }
+public class FileSystemServiceTest extends ServiceTestBase{
 
     @Test
     public void addFileReadItAndUpdateIt_Success() throws URISyntaxException, IOException {

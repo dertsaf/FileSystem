@@ -17,7 +17,7 @@ public class ServiceProviderTest {
     }
 
     @Test
-    public void getInstance_ThrowsException_whenImplementationNotProvided() {
+    public void getInstance_ThrowsException_WhenImplementationNotProvided() {
         assertThrows(RuntimeException.class,
                 () -> ServiceProvider.getInstance(ServiceProviderTest.class));
     }

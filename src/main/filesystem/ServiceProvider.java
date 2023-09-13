@@ -8,13 +8,18 @@ import static filesystem.constants.Constants.SERVICE_NOT_REGISTERED_MESSAGE;
 
 public class ServiceProvider {
 
+    private final static Map<Class<?>, Object> DEFAULT_IMPLEMENTATION = Map.of(
+            ContentFileService.class, new ContentFileServiceImpl(),
+            FileSystemService. class, new FileSystemServiceImpl()
+    );
+
     private ServiceProvider(){}
 
     private static Map<Class<?>, Object> serviceRegistryMap;
 
     public static  <T> void register(Class<T> serviceType, T serviceInstance) {
         if (serviceRegistryMap != null && getServiceRegistry().containsKey(serviceType)) {
-            //only register new impl if there is none for the class
+            //only register new impl if there is none for this class
             throw new RuntimeException(String.format(EXISTING_IMPLEMENTATION_COULD_NOT_BE_OVERRIDDEN_MESSAGE, serviceType.getName()));
         }
         getServiceRegistry().put(serviceType, serviceInstance);
@@ -31,9 +36,7 @@ public class ServiceProvider {
     private static Map<Class<?>, Object> getServiceRegistry() {
         if (serviceRegistryMap == null) {
             //provide default implementation:
-            serviceRegistryMap = new HashMap<>();
-            serviceRegistryMap.put(ContentFileService.class, new ContentFileServiceImpl());
-            serviceRegistryMap.put(FileSystemService. class, new FileSystemServiceImpl());
+            serviceRegistryMap = new HashMap<>(DEFAULT_IMPLEMENTATION);
         }
         return serviceRegistryMap;
     }
