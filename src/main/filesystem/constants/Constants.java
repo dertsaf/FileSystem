@@ -4,11 +4,19 @@ public class Constants {
 
     public static final String FILE_ALREADY_EXISTS_MESSAGE = "An error occurred while adding a file. " +
             "Please verify that you've provided correct path to the destination file. " +
-            "The file you have provided already exists.";
+            "The file you have provided already exists. ";
 
     public static final String NO_SUCH_FILE_MESSAGE = "An error occurred while updating the file. " +
-            "Please verify that you've provided correct path to the destination file." +
-            "The file you have provided does not exist.";
+            "Please verify that you've provided correct path to the file." +
+            "The file you have provided does not exist: %s";
+
+    public static final String PROVIDED_FILE_ALREADY_EXISTS_IN_FILE_SYSTEM_MESSAGE = "Provided file already exists in the file system: %s";
+
+    public static final String PROVIDED_FILE_DOES_NOT_EXIST_IN_FILE_SYSTEM_MESSAGE = "Provided file does not exist in the file system: %s";
+
+    public static final String INTERNAL_ERROR_MESSAGE = "Internal Error. Our system has been broken. Please clean the system by deleting this file: ";
+
+    public static final String INTERNAL_ERROR_SYSTEM_FILE_DOES_NOT_EXIST_MESSAGE = "Internal Error. Our system has been broken. Please create new file: ";
 
     public static final String PROVIDE_BOTH_FILES_MESSAGE = "Please provide both paths to the files.";
 

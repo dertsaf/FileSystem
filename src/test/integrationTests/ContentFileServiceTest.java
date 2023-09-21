@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ContentFileServiceTest extends ServiceTestBase{
+public class ContentFileServiceTest extends ServiceTestBase {
 
     @Test
     public void copyContent_CopiedFileHasTheSameContent() throws URISyntaxException, IOException {
@@ -27,8 +27,7 @@ public class ContentFileServiceTest extends ServiceTestBase{
 
         //create new file - copy of the TestFile.txt
         var copyOfTestFile = FileSystemUtil.extractDirectory(fileToBeCopiedPath) + "/"+ UUID.randomUUID();
-        ////register file for the cleanup
-        filesToRemove.add(copyOfTestFile);
+
         File copyFile = Paths.get(copyOfTestFile).toFile();
         contentFileService.copyContent(copyFile, fileToBeCopied);
 

@@ -13,7 +13,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FileSystemServiceTest extends ServiceTestBase{
+public class FileSystemServiceTest extends ServiceTestBase {
 
     @Test
     public void addFileReadItAndUpdateIt_Success() throws URISyntaxException, IOException {
@@ -30,9 +30,6 @@ public class FileSystemServiceTest extends ServiceTestBase{
 
         var destinationFilePath = FileSystemUtil.extractDirectory(fileToAddPath) + "/"+ ADDED_TEST_FILE;
 
-        //register file for the cleanup:
-        filesToRemove.add(destinationFilePath);
-
         //add File
         fileSystem.addFile(destinationFilePath, fileToAddPath);
 
@@ -41,8 +38,6 @@ public class FileSystemServiceTest extends ServiceTestBase{
 
         //read the added file into TestFile.txt_v2  file:
         var newDestinationFile = destinationFilePath + "_v2";
-        //register file for the cleanup
-        filesToRemove.add(newDestinationFile);
 
         fileSystem.readFile(destinationFilePath, newDestinationFile);
 
@@ -67,9 +62,6 @@ public class FileSystemServiceTest extends ServiceTestBase{
 
         var destinationFilePath = FileSystemUtil.extractDirectory(fileToAddPath) + "/"+ ADDED_TEST_FILE;
 
-        //register file for the cleanup in case if delete fails
-        filesToRemove.add(destinationFilePath);
-
         //add File
         fileSystem.addFile(destinationFilePath, fileToAddPath);
         assertTrue(Files.exists(Paths.get(destinationFilePath)));
@@ -91,9 +83,6 @@ public class FileSystemServiceTest extends ServiceTestBase{
 
         var destinationFilePath = FileSystemUtil.extractDirectory(fileToAddPath) + "/"+ UUID.randomUUID();
         var destinationFilePath2 = FileSystemUtil.extractDirectory(fileToAddPath) + "/"+ UUID.randomUUID();
-
-        //register file for the cleanup in case if delete fails
-        filesToRemove.add(destinationFilePath);
 
         //create a file that doesn't exist
         File file = new File(destinationFilePath);

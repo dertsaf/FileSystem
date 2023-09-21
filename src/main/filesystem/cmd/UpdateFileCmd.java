@@ -4,6 +4,7 @@ import filesystem.FileSystemService;
 import filesystem.ServiceProvider;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import static filesystem.constants.Constants.*;
 
@@ -18,13 +19,13 @@ public class UpdateFileCmd {
 
         try {
             var destinationFile = args[0];
-            var fileToAdd = args[1];
+            var fileToUpdateWith = args[1];
             var fileSystem =  ServiceProvider.getInstance(FileSystemService.class);
 
-            fileSystem.updateFile(destinationFile, fileToAdd);
+            fileSystem.updateFile(destinationFile, fileToUpdateWith);
 
             System.out.println(OPERATION_FINISHED_MESSAGE);
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             System.err.println(OPERATION_FAILED_MESSAGE);
             e.printStackTrace();
         }

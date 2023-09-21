@@ -31,10 +31,15 @@ public class FileSystemServiceTest {
         ServiceProvider
                 .register(ContentFileService.class, new ContentFileService() {
                     @Override
-                    public void copyContent(File destinationFile, File fileToCopy) {
-                        //do nothing
-                    }
-
+                    public void saveFileToFileSystem(String destinationFile, File fileToCopy) throws IOException {}
+                    @Override
+                    public void readFileFromFileSystem(String fileToReadFrom, File fileToCopyTo) throws IOException {}
+                    @Override
+                    public void deleteFileFromFileSystem(String fileToDelete) throws IOException {}
+                    @Override
+                    public void updateFileInFileSystem(String destinationFile, File fileToUpdateWith) throws IOException {}
+                    @Override
+                    public void copyContent(File destinationFile, File fileToCopy) {}
                     @Override
                     public boolean haveSameContent(File expected, File actual) {
                         return false;

@@ -19,22 +19,10 @@ abstract class ServiceTestBase {
     public final static String TEST_FILE2 = "TestFile2.txt";
     protected static FileSystemService fileSystem;
     protected static ContentFileService contentFileService;
-    protected final static List<String> filesToRemove = new LinkedList<>();
 
     @BeforeAll
     public static void initialization() {
         fileSystem = ServiceProvider.getInstance(FileSystemService.class);
         contentFileService = ServiceProvider.getInstance(ContentFileService.class);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        for (var file: filesToRemove) {
-            try {
-                Files.delete(Paths.get(file));
-            } catch (IOException e) {
-                //do nothing
-            }
-        }
     }
 }

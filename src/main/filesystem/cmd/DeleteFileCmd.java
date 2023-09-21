@@ -4,6 +4,7 @@ import filesystem.FileSystemService;
 import filesystem.ServiceProvider;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import static filesystem.constants.Constants.*;
 
@@ -23,7 +24,7 @@ public class DeleteFileCmd {
             fileSystem.deleteFile(fileToDelete);
 
             System.out.println(OPERATION_FINISHED_MESSAGE);
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             System.err.println(OPERATION_FAILED_MESSAGE);
             e.printStackTrace();
         }

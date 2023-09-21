@@ -1,6 +1,7 @@
 package filesystem;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * The FileSystemService provides methods for managing files in a file system.
@@ -15,7 +16,7 @@ public interface FileSystemService {
      * @param fileToAdd       The path to the file to be added to the file system.
      * @throws IOException If an I/O error occurs during the operation.
      */
-    void addFile(String destinationFile, String fileToAdd) throws IOException;
+    void addFile(String destinationFile, String fileToAdd) throws IOException, URISyntaxException;
 
     /**
      * Updates the contents of a file in the file system with the contents of another file.
@@ -24,7 +25,7 @@ public interface FileSystemService {
      * @param fileToUpdateWith The path to the file whose contents will be used for the update.
      * @throws IOException If an I/O error occurs during the operation.
      */
-    void updateFile(String destinationFile, String fileToUpdateWith) throws IOException;
+    void updateFile(String destinationFile, String fileToUpdateWith) throws IOException, URISyntaxException;
 
     /**
      * Deletes a file from the file system.
@@ -32,7 +33,7 @@ public interface FileSystemService {
      * @param fileToDelete The path of the file to be deleted from the file system.
      * @throws IOException If an I/O error occurs during the operation.
      */
-    void deleteFile(String fileToDelete) throws IOException;
+    void deleteFile(String fileToDelete) throws IOException, URISyntaxException;
 
     /**
      * Reads the contents of a file from the file system and copies it to another file.
@@ -41,5 +42,5 @@ public interface FileSystemService {
      * @param fileToCopyTo   The path to the file where the contents will be copied.
      * @throws IOException If an I/O error occurs during the operation.
      */
-    void readFile(String fileToReadFrom, String fileToCopyTo) throws IOException;
+    void readFile(String fileToReadFrom, String fileToCopyTo) throws IOException, URISyntaxException;
 }
