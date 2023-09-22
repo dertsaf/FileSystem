@@ -18,7 +18,7 @@ public class ContentFileServiceImpl implements ContentFileService {
 
     private static final String OFFSET_SEPARATOR = "#;";
 
-    private static final long INITIAL_FILE_CONTENT_OFFSET = 100;
+    private static final long INITIAL_FILE_CONTENT_OFFSET = 1000;
 
     private static final int BUFFER_SIZE = 4096;
 
@@ -26,6 +26,7 @@ public class ContentFileServiceImpl implements ContentFileService {
 
     private long fileContentOffset = -1;
 
+    @Override
     public void saveFileToFileSystem(String destinationFile, File fileToCopy) throws IOException, URISyntaxException {
         //load map and offset
         loadIndexMapAndContentOffsetIfNeeded();
@@ -43,14 +44,14 @@ public class ContentFileServiceImpl implements ContentFileService {
         saveIndexMapToFile();
     }
 
+    @Override
     public void readFileFromFileSystem(String fileToReadFrom, File fileToCopyTo) throws IOException, URISyntaxException {
         //load map and offset
         loadIndexMapAndContentOffsetIfNeeded();
 
         //there is no such file in the file system
         if (!indexMap.containsKey(fileToReadFrom)) {
-            System.out.println(String.format(PROVIDED_FILE_DOES_NOT_EXIST_IN_FILE_SYSTEM_MESSAGE, fileToReadFrom));
-            return;
+            throw new NoSuchFileException(fileToReadFrom);
         }
 
         var fileSystemPath = getSystemFilePath();
@@ -89,13 +90,13 @@ public class ContentFileServiceImpl implements ContentFileService {
         }
     }
 
+    @Override
     public void deleteFileFromFileSystem(String fileToDelete) throws IOException, URISyntaxException {
         //load map and offset
         loadIndexMapAndContentOffsetIfNeeded();
 
         if (!indexMap.containsKey(fileToDelete)) {
-            System.out.println(String.format(PROVIDED_FILE_DOES_NOT_EXIST_IN_FILE_SYSTEM_MESSAGE, fileToDelete));
-            return;
+            throw new NoSuchFileException(fileToDelete);
         }
 
         var fileMetaData = indexMap.get(fileToDelete);
@@ -153,6 +154,14 @@ public class ContentFileServiceImpl implements ContentFileService {
         }
 
         return true;
+    }
+
+    public void cleanVirtualFileSystem() throws URISyntaxException, IOException {
+        var resourceSystemFile = getSystemFilePath();
+
+        try (RandomAccessFile systemFile = new RandomAccessFile(resourceSystemFile, "rw")) {
+            systemFile.setLength(0);
+        }
     }
 
     private FileMetaData appendToEndOfSystemFile(String pathToFile, File fileToAppend) throws IOException, URISyntaxException {
@@ -289,12 +298,14 @@ public class ContentFileServiceImpl implements ContentFileService {
             long currentPosition = systemFile.length();
             systemFile.seek(currentPosition);
 
-            //todo
-            byte[] buffer = new byte[2];
+            byte[] buffer = new byte[BUFFER_SIZE];
             int bytesRead;
 
             // Start from the end of the file and move content to the new position
             while (currentPosition > shiftStartPosition) {
+                if (currentPosition < buffer.length) {
+                    buffer = new byte[(int) currentPosition];
+                }
                 long readPosition = currentPosition - buffer.length;
                 long writePosition = readPosition + shiftLength;
 
@@ -319,8 +330,7 @@ public class ContentFileServiceImpl implements ContentFileService {
             //long endPosition = currentPosition + shiftLength;
             long endPosition = systemFile.length();
 
-            //todo
-            byte[] buffer = new byte[2];
+            byte[] buffer = new byte[BUFFER_SIZE];
             int bytesRead;
 
             while (currentPosition < endPosition) {

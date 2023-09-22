@@ -18,7 +18,7 @@ public class ContentFileServiceTest extends ServiceTestBase {
 
     @Test
     public void copyContent_CopiedFileHasTheSameContent() throws URISyntaxException, IOException {
-        var classLoader = FileSystemServiceTest.class.getClassLoader();
+        var classLoader = ContentFileServiceTest.class.getClassLoader();
 
         var resourceTestFile = classLoader.getResource(TEST_FILE);
         assertNotNull(resourceTestFile);
@@ -38,7 +38,7 @@ public class ContentFileServiceTest extends ServiceTestBase {
 
     @Test
     public void haveSameContent_ReturnsFalse_WhenFilesHaveDifferentContent() throws URISyntaxException, IOException {
-        var classLoader = FileSystemServiceTest.class.getClassLoader();
+        var classLoader = ContentFileServiceTest.class.getClassLoader();
 
         var resourceTestFile = classLoader.getResource(TEST_FILE);
         assertNotNull(resourceTestFile);

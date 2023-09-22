@@ -45,4 +45,11 @@ public interface ContentFileService {
      * @throws IOException If an I/O error occurs during the comparison.
      */
     boolean haveSameContent(File expected, File actual) throws IOException;
+
+    /**
+     * Cleans the virtual system by removing all files
+     *
+     * @throws IOException, URISyntaxException If an I/O/URISyntaxException error occurs during the comparison.
+     */
+    void cleanVirtualFileSystem() throws IOException, URISyntaxException;
 }

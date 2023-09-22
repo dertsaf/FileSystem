@@ -42,11 +42,7 @@ public class FileSystemServiceImpl implements FileSystemService {
 
     @Override
     public void readFile(String fileToReadFrom, String fileToCopyTo) throws IOException, URISyntaxException {
-        //addFile(fileToCopyTo, fileToReadFrom);
         Path fileToCopyToPath = Paths.get(fileToCopyTo);
-
-        //if (!Files.exists(fileToCopyToPath))
-            //throw new NoSuchFileException(fileToCopyTo, null, Constants.NO_SUCH_FILE_MESSAGE);
 
         ServiceProvider
                 .getInstance(ContentFileService.class)

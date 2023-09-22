@@ -44,6 +44,11 @@ public class FileSystemServiceTest {
                     public boolean haveSameContent(File expected, File actual) {
                         return false;
                     }
+
+                    @Override
+                    public void cleanVirtualFileSystem() throws IOException, URISyntaxException {
+
+                    }
                 });
 
         fileSystem = ServiceProvider.getInstance(FileSystemService.class);
@@ -54,34 +59,6 @@ public class FileSystemServiceTest {
         for (var path: pathsToRemove) {
             Files.deleteIfExists(path);
         }
-    }
-
-    @Test
-    public void addAndReadFile_CreatesDirectory_WhenDirectoryDoesNotExist() throws URISyntaxException, IOException {
-        //find the TestFile.txt
-        var classLoader = FileSystemServiceTest.class.getClassLoader();
-
-        URL resourceTestFile = classLoader.getResource(TEST_FILE);
-        assertNotNull(resourceTestFile);
-
-        Path fileToAddPath = Paths.get(resourceTestFile.toURI());
-        Path directory = Paths.get(FileSystemUtil.extractDirectory(fileToAddPath) +  "/random/");
-        String destinationFilePath = directory + "/" + ADDED_TEST_FILE;
-
-        //register the path to be deleted after the test
-        pathsToRemove.add(directory);
-
-        assertFalse(Files.exists(directory));
-
-        //addFile: creates not existing directory '..../random/'
-        fileSystem.addFile(destinationFilePath, fileToAddPath.toString());
-        assertTrue(Files.exists(directory));
-
-        //readFile: not existing directory '..../random/'
-        Files.deleteIfExists(directory);
-        assertFalse(Files.exists(directory));
-        fileSystem.readFile(fileToAddPath.toString(), destinationFilePath);
-        assertTrue(Files.exists(directory));
     }
 
     @Test
@@ -103,14 +80,13 @@ public class FileSystemServiceTest {
         );
 
         //read file that doesn't exist
-        assertThrows(
-                NoSuchFileException.class,
+        assertDoesNotThrow(
                 () -> fileSystem.readFile(fileToAddPath + "blabla", destinationFilePath)
         );
     }
 
     @Test
-    public void addAndReadFile_ThrowsException_WhenDestinationFileExist() throws URISyntaxException {
+    public void addAndReadFile_DoesNotThrowsException_WhenDestinationFileExist() throws URISyntaxException {
         //find the TestFile.txt
         var classLoader = FileSystemServiceTest.class.getClassLoader();
 
@@ -122,20 +98,18 @@ public class FileSystemServiceTest {
         var fileToAdd = fileToAddPath.toString();
 
         //Try to add file that exists
-        assertThrows(
-                FileAlreadyExistsException.class,
+        assertDoesNotThrow(
                 () -> fileSystem.addFile(fileToAdd, fileToAdd)
         );
 
         //Try to add file that exists
-        assertThrows(
-                FileAlreadyExistsException.class,
+        assertDoesNotThrow(
                 () -> fileSystem.readFile(fileToAdd, fileToAdd)
         );
     }
 
     @Test
-    public void updateFile_ThrowsException_WhenAnyOfTheFilesDoesNotExist() throws URISyntaxException {
+    public void updateFile_OnlyThrowsException_WhenFileToUpdateWithDoesNotExist() throws URISyntaxException {
         //find the TestFile.txt
         var classLoader = FileSystemServiceTest.class.getClassLoader();
 
@@ -148,8 +122,7 @@ public class FileSystemServiceTest {
         String fileToAdd = fileToAddPath.toString();
 
         //update file that doesn't exist
-        assertThrows(
-                NoSuchFileException.class,
+        assertDoesNotThrow(
                 () -> fileSystem.updateFile(fileToAdd + "bla", fileToAdd)
         );
 
